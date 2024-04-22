@@ -1,0 +1,9 @@
+.searchBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+video {
+    width: 800px;
+    height: 500px;
+}
