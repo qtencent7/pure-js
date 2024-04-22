@@ -4,14 +4,16 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "node server_with_socketio.js",
-    "start": "node HotReloadServer.js"
+    "test": "node test.js",
+    "start": "node HotReloadServer.js",
+    "pug": "node ./public/pug_test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "md5": "^2.3.0",
+    "pug": "^3.0.2",
     "socket.io": "^4.7.5"
   }
 }

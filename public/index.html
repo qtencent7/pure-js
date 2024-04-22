@@ -9,32 +9,50 @@
 <body>
     <div class="searchBar">
         <input type="text" placeholder="请输入搜索内容">
-        <button>搜索</button>
+        <button onclick="search()">搜索</button>
     </div>
     <script>
         const videoJson = [
-            {name: '三月最火歌曲', id: 1, src: 'media/video.mp4'},
-            {name: '强势美元引发亚洲金融风暴', id: 2, src: 'media/video.mp4'},
-            {name: '经典歌曲', id: 3, src: 'media/video.mp4'},    
+            {name: '三月最火歌曲', id: 1, src: 'media/sanyuegequ.mp4'},
+            {name: '强势美元引发亚洲金融风暴', id: 2, src: 'media/jinrongfengbao.mp4'},
+            {name: '经典歌曲', id: 3, src: 'media/jindiangequ.mp4'},    
             {name: 'spring AI最新发布', id: 4, src: 'media/video.mp4'},
-            {name: '马未都讲吃饭', id: 5, src: 'media/video.mp4'},
+            {name: '马未都讲吃饭', id: 5, src: 'media/maweidu.mp4'},
             {name: '沸腾吧火锅', id: 6, src: 'media/video.mp4'},
             {name: '轻松音乐', id: 7, src: 'media/video.mp4'},
             {name: 'kkbox华语金曲', id: 8, src: 'media/video.mp4'},
             {name: 'react教学', id: 9, src: 'media/video.mp4'},
         ]
         const searchBar = document.querySelector('.searchBar')
-
-        for (let i = 0; i < videoJson.length; i++) {
-            const video = document.createElement('video')
-            const span = document.createElement('span')
-            const section = document.createElement('section')
-            video.src = videoJson[i].src
-            video.controls = true
-            span.innerText = videoJson[i].name
-            section.appendChild(video)
-            section.appendChild(span)
-            searchBar.insertAdjacentElement('afterend', section)
+        const div = document.createElement('div')
+        div.classList.add('videoList')
+        function appendVideoElement(videos, container) {
+            for (let i = 0; i < videos.length; i++) {
+                const video = document.createElement('video')
+                const h1 = document.createElement('h1')
+                const section = document.createElement('section')
+                video.src = videos[i].src
+                video.controls = true
+                h1.classList.add('title')
+                h1.innerText = videos[i].name
+                section.appendChild(video)
+                section.appendChild(h1)
+                container.appendChild(section)
+            }
+        }
+        appendVideoElement(videoJson, div)
+        searchBar.insertAdjacentElement('afterend', div)
+        function search() {
+            const searchInput = document.querySelector('input')
+            const searchValue = searchInput.value
+            const target = videoJson.filter(item => {
+                if (item.name.indexOf(searchValue) !== -1) {
+                    return true
+                }
+            })
+            const div = document.querySelector('.videoList')
+            div.innerHTML = ''
+            appendVideoElement(target, div)
         }
     </script>
     <section></section>
