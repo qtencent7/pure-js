@@ -8,31 +8,78 @@
 </head>
 
 <body>
-    <script>
-        // 假设你有一个HTML片段
-        const htmlFragment = `
+<script>
+    // 假设你有一个HTML片段
+const htmlFragment = `
 <div>
     <h1>Title</h1>
     <p>Paragraph content</p>
 </div>
 `;
 
-        // 创建一个函数来将HTML片段转换为虚拟DOM对象
-        function htmlToVirtualDOM(html) {
-            // 创建一个临时的容器元素
-            const tempContainer = document.createElement('div');
-            // 设置容器元素的innerHTML为HTML片段
-            tempContainer.innerHTML = html;
+// 定义一个函数来解析HTML并构建虚拟DOM
+function parseHTMLToVDOM(html) {
+    // 简单的HTML解析器，这里只是一个非常基础的实现
+    function parseElement(index) {
+        // 寻找下一个标签的开头
+        const startTagOpen = html.indexOf('<', index);
+        if (startTagOpen === -1) return null;
 
-            tempContainer.
+        // 寻找标签的闭合 >
+        const startTagClose = html.indexOf('>', startTagOpen);
+        if (startTagClose === -1) return null;
+
+        // 提取标签名称和属性
+        const tag = html.substring(startTagOpen + 1, startTagClose);
+        const tagName = tag.split(' ')[0].toLowerCase();
+        const props = {};
+        tag.split(' ').slice(1).forEach(attr => {
+            const [key, value] = attr.split('=');
+            props[key] = value ? value.replace(/["']/g, '') : true;
+        });
+
+        // 构建虚拟DOM节点
+        const vNode = { type: tagName, props: props, children: [] };
+
+        // 寻找下一个标签的开头
+        let endTagOpen = html.indexOf('</', startTagClose);
+        let textEnd = endTagOpen === -1 ? html.length : endTagOpen;
+
+        // 提取文本内容
+        const text = html.substring(startTagClose + 1, textEnd).trim();
+        if (text) {
+            vNode.children.push(text);
         }
 
-        // 使用htmlToVirtualDOM函数将HTML片段转换为虚拟DOM对象
-        const virtualDOM = htmlToVirtualDOM(htmlFragment);
+        // 递归解析子元素
+        let childIndex = startTagClose + 1;
+        while (childIndex < endTagOpen) {
+            const child = parseElement(childIndex);
+            if (child) {
+                vNode.children.push(child);
+                childIndex = child.endIndex;
+            } else {
+                break;
+            }
+        }
 
-        console.log(JSON.stringify(virtualDOM, null, 2));
+        // 更新索引，指向当前元素的闭合标签的结束
+        vNode.endIndex = endTagOpen + tagName.length + 3; // +3 for '</' and '>'
+        return vNode;
+    }
 
-    </script>
+    // 从根元素开始解析
+    const vDOM = parseElement(0);
+
+    return vDOM;
+}
+
+// 使用parseHTMLToVDOM函数将HTML片段转换为虚拟DOM对象
+const virtualDOM = parseHTMLToVDOM(htmlFragment);
+
+console.log(JSON.stringify(virtualDOM, null, 2));
+
+</script>
 </body>
 
 </html>
