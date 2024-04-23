@@ -4,16 +4,27 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "node test.js",
+    "node-test": "node ./public/node-test/test.js",
     "start": "node HotReloadServer.js",
-    "pug": "node ./public/pug_test.js"
+    "pug": "node ./public/pug_test.js",
+    "convert": "browserify ./public/node-test/node-htmlparser.js > ./public/node-test/node-htmlparser-browser.js"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "html-to-vdom": "^0.7.0",
+    "html-virtualize": "^0.3.0",
+    "html2any": "^0.0.7",
+    "htmlparser2": "^9.1.0",
     "md5": "^2.3.0",
     "pug": "^3.0.2",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "virtual-dom": "^2.1.1"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "cjs-to-es6": "^2.0.1"
   }
 }

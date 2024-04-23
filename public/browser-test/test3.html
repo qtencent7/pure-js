@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./html2any-browser.js"></script>
+    <script>
+
+
+        const template =
+            `<div>
+                <div class="container">
+                    <input placeholder="Search" type="text" var="input"/>
+                    <input type="submit" value="Search" var="button"/>
+                </div>
+                <div>
+                    <div for="videos">
+                        <h1>#title#</h1>
+                        <video src controls></video>
+                    </div>       
+                </div>
+            </div>`
+
+        window.videos = [{
+            name: "搞笑",
+            title: "视频一",
+            src: "1.mp4",
+            controls: true
+        }, {
+            name: "娱乐",
+            title: "视频二",
+            src: "2.mp4",
+            controls: true
+        }]
+
+        const ast = parse(template)[0]
+
+        function rule(node, children) {
+            return node
+        }
+
+        const vdom = transform(ast, rule)
+        console.log(vdom)
+        function secondTransform(vdom) {
+
+        }
+        function createDOMFromObject(obj) {
+            // 创建元素节点
+            if (typeof obj === "object")
+                var element = document.createElement(obj.name);
+            else
+                var element = document.createTextNode(obj);
+            // 设置元素的属性
+            for (var attr in obj.attributes) {
+                if (obj.attributes[attr]) {
+                    if (attr === "for") {
+                        let length = window[obj.attributes[attr]].length
+                        for (var i = 0; i < length; i++) {
+                            delete obj.attributes[attr]
+                            element = createDOMFromObject(obj)
+                        }
+                    }
+                    element.setAttribute(attr, obj.attributes[attr]); // 假设属性值与属性名相同
+                }
+            }
+
+            // 处理子节点
+            if (obj.children && obj.children.length) {
+                obj.children.forEach(function (child) {
+                    if (obj.attributes.for) {
+                        let length = window[obj.attributes[attr]].length
+                        for (var i = 0; i < length; i++) {
+                            delete obj.attributes[attr]
+                            var childNode = createDOMFromObject(child); // 递归创建子节点
+                            element.appendChild(childNode);
+                        }
+                    }
+                    else {
+                        var childNode = createDOMFromObject(child); // 递归创建子节点
+                        element.appendChild(childNode);
+                    }
+
+                });
+            }
+
+            // // 处理文本内容
+            // if (obj.children && typeof obj.children === 'string') {
+            //     element.textContent = obj.children;
+            // }
+
+            return element;
+        }
+        var dom = createDOMFromObject(vdom);
+
+        // 将创建的DOM节点添加到文档中
+        document.body.appendChild(dom);
+    </script>
+</body>
+
+</html>
