@@ -9,23 +9,46 @@
 
 <body>
     <script>
-        const str = `<div for="videos">
-                <span>#item.name#</span>
-                <h1>#item.title#</h1>
-                <video src="#item.src#" controls></video>
-            </div>`;
-
-        // 正则表达式匹配包含for属性的div标签
-        const regex = /<div.*?for=['"].*?['"].*?>/;
-
-        const match = str.match(regex);
-
-        if (match) {
-            console.log(match); // 打印匹配到的div标签（如果包含for属性）
-        } else {
-            console.log('No match found');
+        const template = `
+            <div class var="container">
+                <input placeholder type var="input"/>
+                <input type value onclick var="button"/>
+            </div>
+            <div>
+                <div for="videos">
+                    <h1>#title#</h1>
+                    <video src controls></video>
+                </div>       
+            </div>
+        `
+        const videos = [{
+            name: "搞笑",
+            title: "视频一",
+            src: "1.mp4",
+            controls: true
+        }, {
+            name: "娱乐",
+            title: "视频二",
+            src: "2.mp4",
+            controls: true
+        }]
+        console.log(template)
+        function splitTemplate(template) {
+            let target = template.split('\n');
+            const reg = /\w+/g
+            target = target.filter(item => {
+                if (item.match(reg))
+                    return true
+                else
+                    return false
+            }).map(item => {
+                return item.trim()
+            })
+            return target
         }
-
+        const split = splitTemplate(template);
+        console.log(split);
+    </script>
     </script>
 </body>
 

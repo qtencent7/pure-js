@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 假设你有一个HTML片段
+        const htmlFragment = `
+<div>
+    <h1>Title</h1>
+    <p>Paragraph content</p>
+</div>
+`;
+
+        // 创建一个函数来将HTML片段转换为虚拟DOM对象
+        function htmlToVirtualDOM(html) {
+            // 创建一个临时的容器元素
+            const tempContainer = document.createElement('div');
+            // 设置容器元素的innerHTML为HTML片段
+            tempContainer.innerHTML = html;
+
+            tempContainer.
+        }
+
+        // 使用htmlToVirtualDOM函数将HTML片段转换为虚拟DOM对象
+        const virtualDOM = htmlToVirtualDOM(htmlFragment);
+
+        console.log(JSON.stringify(virtualDOM, null, 2));
+
+    </script>
+</body>
+
+</html>

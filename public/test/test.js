@@ -1,28 +1,41 @@
-const fs = require('fs');
-const path = require('path');
-const videos = [{
-    name: "搞笑",
-    title: "视频一",
-    src: "1.mp4"
-},{
-    name: "娱乐",
-    title: "视频二",
-    src: "2.mp4"
-}]
-const window = {
-    videos: videos
-}
-const templatePath = path.join(__dirname, 'public', 'template_try', 'video.tp');
-function renderToHtml(template) {
-    const reg1 = /<(div)\sfor=\"([a-z]*)\">([\s|\S]*)<\1>/
-    template.replace(reg1, function(p0, p1, p2, p3) {
-        console.log(p1)
-        console.log(p2)
-        console.log(p3)
-    })
-}
-fs.readFile(templatePath, 'utf8', (err, data) => {
-    const template = data.toString()
-    renderToHtml(template)
-})
-
+import {
+    jsx as _jsx,
+    jsxs as _jsxs,
+    Fragment as _Fragment
+  } from "react/jsx-runtime";
+_jsxs(_Fragment, {
+    children: [
+      _jsxs("div", {
+        class: true,
+        var: "container",
+        children: [
+          _jsx("input", {
+            placeholder: true,
+            type: true,
+            var: "input"
+          }),
+          _jsx("input", {
+            type: true,
+            value: true,
+            onclick: true,
+            var: "button"
+          })
+        ]
+      }),
+      _jsx("div", {
+        children: _jsxs("div", {
+          for: "videos",
+          children: [
+            _jsx("h1", {
+              children: "#title#"
+            }),
+            _jsx("video", {
+              src: true,
+              controls: true
+            })
+          ]
+        })
+      })
+    ]
+  });
+  
