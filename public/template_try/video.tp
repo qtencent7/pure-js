@@ -1,11 +1,31 @@
-<div>
-    <div for="videos">
-        <span>#item.name#</span>
-        <h1>#item.title#</h1>
-        <video src="#item.src#" controls></video>
-    </div>
+
+<div for="videos">
+    <span>#item.name#</span>
+    <h1>#item.title#</h1>
+    <video src="#item.src#" controls></video>
 </div>
 
 
+[{
+    name: "搞笑",
+    title: "视频一",
+    src: "1.mp4"
+},{
+    name: "娱乐",
+    title: "视频二",
+    src: "2.mp4"
+}]
 
+<div>
+    <div>
+        <span>搞笑</span>
+        <h1>视频一</h1>
+        <video src="1.mp4" controls></video>
+    </div>
+        <div>
+        <span>娱乐</span>
+        <h1>视频二</h1>
+        <video src="2.mp4" controls></video>
+    </div>
+</div>
 

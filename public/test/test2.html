@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const str = `<div for="videos">
+                <span>#item.name#</span>
+                <h1>#item.title#</h1>
+                <video src="#item.src#" controls></video>
+            </div>`;
+
+        // 正则表达式匹配包含for属性的div标签
+        const regex = /<div.*?for=['"].*?['"].*?>/;
+
+        const match = str.match(regex);
+
+        if (match) {
+            console.log(match); // 打印匹配到的div标签（如果包含for属性）
+        } else {
+            console.log('No match found');
+        }
+
+    </script>
+</body>
+
+</html>

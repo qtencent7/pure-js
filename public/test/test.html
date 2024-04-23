@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const template = `
+            <div for="videos">
+                <span>~item.name~</span>
+                <h1>~item.title~</h1>
+                <video src="item.src" controls="true"></video>
+            </div>
+        `
+        let uid = 0
+        function extractAttr(source) {
+            const reg = /\w+="[\w.]+"/g
+            let match = {}
+            source.replace(reg, function(...args) {
+                // console.log('-----', args)
+                match[`$${uid++}`] = args[0]
+            })
+            if (match.hasOwnProperty(`$${1}`))
+                return match
+        }
+        function ananlyzeAttr(source) {
+            const reg = /(\w+)="(\w+)\.*(\w*)"/g
+            let match = []
+            for (const key in source) {
+                source[key].replace(reg, function(...args) {
+                    console.log('-----', args)
+                    match.push({
+                        key: args[1],
+                        val: args[2]
+                    })
+                })
+            }
+            return match
+            
+        }
+        const reg = /<(\w+).*>/g
+        let rootElement
+        let kids = []
+        let matchFor
+        template.replace(reg, function (...args) {
+            if (args[0].indexOf('for') !== -1) {
+                rootElement = args[1]
+                const regWithFor = /for="(\w+)"/g
+                matchFor = regWithFor.exec(args[0])
+                // console.log('-----', matchFor, matchFor[1])
+            } else {
+                kids.push({element:args[1], source: args[0]})
+            }
+            console.log(args)
+        })
+        console.log(kids)
+        function forLoop(rootElement, data, kidElements) {
+            console.log('kidElements', kidElements)
+            const container = document.createElement('div')
+            for (let i = 0; i < data.length; i++) {
+                const root = document.createElement(rootElement)
+                for (const iterator of kidElements) {
+                    const element = document.createElement(iterator.element)
+                    const key = extractData(iterator.source)
+                    const attr = extractAttr(iterator.source)
+                    if (attr) {
+                        const keyvals = ananlyzeAttr(attr)
+                        for (const keyval of keyvals) {
+                            element.setAttribute(keyval.key, data[i][keyval.key])
+                        }
+                    }
+                    if (key)
+                        element.innerHTML = data[i][key]
+                    root.appendChild(element)
+                }
+                container.appendChild(root)
+            }
+            return container
+        }
+        function extractData(source) {
+            const reg = /~(.+)~/g
+            let match
+            source.replace(reg, function(...args) {
+                // console.log('-----', args)
+                match = args[1]
+            })
+            if (match)
+                return match.split('.')[1]
+        }
+
+        const videos = [{
+            name: "搞笑",
+            title: "视频一",
+            src: "1.mp4",
+            controls: true
+        }, {
+            name: "娱乐",
+            title: "视频二",
+            src: "2.mp4",
+            controls: true
+        }]
+        window.videos = videos
+        const container = forLoop(rootElement, window[matchFor[1]], kids)
+        const body = document.querySelector('body')
+        body.appendChild(container)
+    </script>
+    </script>
+</body>
+
+</html>
